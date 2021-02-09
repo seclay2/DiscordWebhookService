@@ -1,19 +1,19 @@
-package io.github.seclay2.webhookservice.model;
+package io.github.seclay2.webhookservice.model.hnp;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ImportanceLevel {
+public class Category {
 
     @JsonProperty("ProjectId")
     private int projectId;
-    @JsonProperty("ImportanceLevelId")
-    private int importanceLevelId;
+    @JsonProperty("CategoryId")
+    private int categoryId;
     @JsonProperty("Name")
     private String name;
 
-    public ImportanceLevel() {
+    public Category() {
     }
 
     public int getProjectId() {
@@ -24,12 +24,12 @@ public class ImportanceLevel {
         this.projectId = projectId;
     }
 
-    public int getImportanceLevelId() {
-        return importanceLevelId;
+    public int getCategoryId() {
+        return categoryId;
     }
 
-    public void setImportanceLevelId(int importanceLevelId) {
-        this.importanceLevelId = importanceLevelId;
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getName() {
@@ -42,9 +42,9 @@ public class ImportanceLevel {
 
     @Override
     public String toString() {
-        return "ImportanceLevel{" +
+        return "Category{" +
                 "projectId=" + projectId +
-                ", importanceLevelId=" + importanceLevelId +
+                ", categoryId=" + categoryId +
                 ", name='" + name + '\'' +
                 '}';
     }

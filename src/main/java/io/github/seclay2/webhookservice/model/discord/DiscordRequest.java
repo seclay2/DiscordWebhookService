@@ -1,24 +1,52 @@
-package io.github.seclay2.webhookservice.model;
+package io.github.seclay2.webhookservice.model.discord;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.seclay2.webhookservice.model.discord.DiscordEmbed;
 
 import java.util.ArrayList;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DiscordRequest {
 
+    @JsonProperty
     private String content;
+    @JsonProperty
     private String username;
+    @JsonProperty
     private String avatar_url;
+    @JsonProperty
     private boolean tts;
+    @JsonProperty
     private String file;
+    @JsonProperty
     private ArrayList<DiscordEmbed> embeds;
 
     public DiscordRequest() {
+        content = "";
+        username = "";
+        avatar_url = "";
+        tts = false;
+        file = "";
+        embeds = new ArrayList<>();
     }
 
     public DiscordRequest(String content) {
         this.content = content;
+    }
+
+    public DiscordRequest(String username, ArrayList<DiscordEmbed> embeds) {
+        this.username = username;
+        this.embeds = embeds;
+    }
+
+    public DiscordRequest(String content, String username, String avatar_url, boolean tts, String file, ArrayList<DiscordEmbed> embeds) {
+        this.content = content;
+        this.username = username;
+        this.avatar_url = avatar_url;
+        this.tts = tts;
+        this.file = file;
+        this.embeds = embeds;
     }
 
     public String getContent() {
@@ -67,6 +95,10 @@ public class DiscordRequest {
 
     public void setEmbeds(ArrayList<DiscordEmbed> embeds) {
         this.embeds = embeds;
+    }
+
+    public void addEmbed(DiscordEmbed embed) {
+        embeds.add(embed);
     }
 
     @Override
