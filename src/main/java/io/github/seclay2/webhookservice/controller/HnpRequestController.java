@@ -1,7 +1,7 @@
 package io.github.seclay2.webhookservice.controller;
 
-import io.github.seclay2.webhookservice.model.DiscordRequest;
-import io.github.seclay2.webhookservice.model.HnpRequest;
+import io.github.seclay2.webhookservice.model.discord.DiscordRequest;
+import io.github.seclay2.webhookservice.model.hnp.HnpRequest;
 import io.github.seclay2.webhookservice.service.HnpRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,17 +15,22 @@ public class HnpRequestController {
 
     @CrossOrigin
     @GetMapping("/test")
-    public String testMethod() {
-        return hnpRequestService.test();
+    public String testGetMethod() {
+        return hnpRequestService.testGet();
     }
 
+    @CrossOrigin
+    @PostMapping("/test")
+    public String testPostMethod() {
+        return hnpRequestService.testPost();
+    }
 
     @CrossOrigin
     @PostMapping("/convert")
     public String convertRequest(@RequestBody HnpRequest req) {
         DiscordRequest discordRequest = hnpRequestService.format(req);
-        hnpRequestService.send(discordRequest);
-        return discordRequest.toString();
+        String response = hnpRequestService.send(discordRequest);
+        return discordRequest.toString() + "\n" + response;
     }
 
 }
