@@ -1,4 +1,4 @@
-package io.github.seclay2.webhookservice.model;
+package io.github.seclay2.webhookservice.model.hnp;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,22 +10,37 @@ public class HnpRequest {
 
     @JsonProperty("ProjectId")
     private int projectId;
+
     @JsonProperty("WorkItemId")
     private int workItemId;
+
     @JsonProperty("ParentStoryId")
     private int parentStoryId;
+
     @JsonProperty("IsStory")
     private boolean isStory;
+
     @JsonProperty("Title")
     private String title;
+
     @JsonProperty("Description")
     private String description;
+
+    @JsonProperty("Category")
+    private Category category;
+
     @JsonProperty("Stage")
     private Stage stage;
+
+    @JsonProperty("UpdateDate")
+    private String updateDate;
+
     @JsonProperty("Board")
     private Board board;
+
     @JsonProperty("AssignedUsers")
     private AssignedUser[] assignedUsers;
+
     @JsonProperty("ImportanceLevel")
     private ImportanceLevel importanceLevel;
 
@@ -80,12 +95,36 @@ public class HnpRequest {
         this.description = description;
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
     public Stage getStage() {
         return stage;
     }
 
     public void setStage(Stage stage) {
         this.stage = stage;
+    }
+
+    public String getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(String updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
     }
 
     public AssignedUser[] getAssignedUsers() {
@@ -113,7 +152,9 @@ public class HnpRequest {
                 ", isStory=" + isStory +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
+                ", category=" + category +
                 ", stage=" + stage +
+                ", board=" + board +
                 ", assignedUsers=" + Arrays.toString(assignedUsers) +
                 ", importanceLevel=" + importanceLevel +
                 '}';
