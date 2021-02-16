@@ -1,6 +1,7 @@
 package io.github.seclay2.webhookservice.service;
 
 import io.github.seclay2.webhookservice.model.discord.*;
+import io.github.seclay2.webhookservice.model.hnp.AssignedUser;
 import io.github.seclay2.webhookservice.model.hnp.HnpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,9 +47,14 @@ public class HnpRequestService {
 
         // setup field list
         List<DiscordField> fieldArrayList = new ArrayList<>();
-        fieldArrayList.add(new DiscordField("Assigned Users", Arrays.toString(request.getAssignedUsers()), true));
-        fieldArrayList.add(new DiscordField("Board", request.getBoard().getName(), true));
-        fieldArrayList.add(new DiscordField("Importance", request.getImportanceLevel().getName(), true));
+        // get username assigned user list
+        List<String> assignedUsersList = new ArrayList<>();
+        for (AssignedUser user : request.getAssignedUsers()) {
+            assignedUsersList.add(user.getUser().getUsername());
+        }
+        fieldArrayList.add(new DiscordField("Assigned Users", assignedUsersList.toString(), false));
+        fieldArrayList.add(new DiscordField("Board", request.getBoard().getName() != null ? request.getBoard().getName() : "unnamed", false));
+        fieldArrayList.add(new DiscordField("Importance", request.getImportanceLevel() != null ? request.getImportanceLevel().getName() : "unnamed", false));
 
         // setup embed
         discordRequest.addEmbed(
@@ -57,10 +63,10 @@ public class HnpRequestService {
                         null,
                         "WorkItem: " + request.getWorkItemId() + "\nStage: " + request.getStage().getStageId(),
                         constructLinkUrl(request),
-                        request.getImportanceLevel().getColor() == null ? 0 : Integer.parseUnsignedInt(request.getImportanceLevel().getColor(), 16),
+                        request.getImportanceLevel().getColor() == null ? 0 : Integer.parseUnsignedInt(request.getImportanceLevel().getColor().substring(1), 16),
                         new DiscordFooter(request.getUpdateDate()),
                         new DiscordThumbnail("https://app.hacknplan.com/Images/icon.png"),
-                        null//fieldArrayList
+                        fieldArrayList
                 ));
 
         discordRequest.setUsername("HacknPlan");
@@ -76,9 +82,6 @@ public class HnpRequestService {
     }
 
     public String send(DiscordRequest request) {
-
-        logger.info("in HnpRequestService.send(): forwarding to webhook url: " + url);
-
         // set additional post headers
         HttpHeaders postHeaders = headers;
         postHeaders.set("token", token);
@@ -88,13 +91,6 @@ public class HnpRequestService {
         logger.info(" HnpRequestService.send(): entity - " + entity.toString());
 
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
-
-        if (response.getStatusCode() == HttpStatus.CREATED) {
-            logger.info("Request Successful: " + response.getBody());
-        }
-        else {
-            logger.info("Request Failed: " + response.getStatusCode());
-        }
 
         return response.getBody();
     }

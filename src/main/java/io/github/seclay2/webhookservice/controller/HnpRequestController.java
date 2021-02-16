@@ -29,8 +29,7 @@ public class HnpRequestController {
     @PostMapping("/convert")
     public String convertRequest(@RequestBody HnpRequest req) {
         DiscordRequest discordRequest = hnpRequestService.format(req);
-        String response = hnpRequestService.send(discordRequest);
-        return discordRequest.toString() + "\n" + response;
+        return hnpRequestService.send(discordRequest);
     }
 
 }
