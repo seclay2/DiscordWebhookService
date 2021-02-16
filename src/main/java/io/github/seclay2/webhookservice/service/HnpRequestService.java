@@ -28,6 +28,11 @@ public class HnpRequestService {
 
     private String[] stageString = { "Planned", "In Progress", "Testing", "Completed" };
 
+    private String[] importanceIconUrls = { "https://i.imgur.com/VRTtOCZ.png",
+                                            "https://i.imgur.com/kgcMbu4.png",
+                                            "https://i.imgur.com/xRx3lF1.png",
+                                            "https://i.imgur.com/EjRxTtr.png" };
+
     @Autowired
     public HnpRequestService(RestTemplate restTemplate,
                              @Value("${hnp.webhook.url}") String url,
@@ -62,15 +67,16 @@ public class HnpRequestService {
                 new DiscordEmbed(
                         request.getTitle(),
                         null,
-                        "WorkItem: " + request.getWorkItemId() + "\nStage: " + stageString[request.getStage().getStageId()],
+                        "WorkItem: " + request.getWorkItemId() + "\nStage: " + stageString[request.getStage().getStageId()-1],
                         constructLinkUrl(request),
                         request.getImportanceLevel().getColor() == null ? 0 : Integer.parseUnsignedInt(request.getImportanceLevel().getColor().substring(1), 16),
                         new DiscordFooter(request.getUpdateDate()),
-                        new DiscordThumbnail("https://app.hacknplan.com/Images/icon.png"),
+                        new DiscordThumbnail(importanceIconUrls[request.getImportanceLevel().getImportanceLevelId()-1]),
                         fieldArrayList
                 ));
 
         discordRequest.setUsername("HacknPlan");
+        discordRequest.setAvatar_url("https://app.hacknplan.com/Images/icon.png");
 
         return discordRequest;
     }
