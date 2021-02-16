@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -26,6 +25,8 @@ public class HnpRequestService {
     private Logger logger = Logger.getLogger(getClass().getName());
 
     private HttpHeaders headers;
+
+    private String[] stageString = { "Planned", "In Progress", "Testing", "Completed" };
 
     @Autowired
     public HnpRequestService(RestTemplate restTemplate,
@@ -61,7 +62,7 @@ public class HnpRequestService {
                 new DiscordEmbed(
                         request.getTitle(),
                         null,
-                        "WorkItem: " + request.getWorkItemId() + "\nStage: " + request.getStage().getStageId(),
+                        "WorkItem: " + request.getWorkItemId() + "\nStage: " + stageString[request.getStage().getStageId()],
                         constructLinkUrl(request),
                         request.getImportanceLevel().getColor() == null ? 0 : Integer.parseUnsignedInt(request.getImportanceLevel().getColor().substring(1), 16),
                         new DiscordFooter(request.getUpdateDate()),
